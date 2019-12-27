@@ -1,0 +1,22 @@
+## USER
+users_registration:
+    path: /api/v1/{_locale}/users
+    controller: App\UserAccount\RegistrationController
+    methods: [POST]
+    requirements:
+        _locale: en|fr
+
+users_authentication:
+    path: /api/v1/{_locale}/users/authenticate
+    controller: App\UserAccount\AuthenticationController
+    methods: [GET]
+    requirements:
+        _locale: en|fr
+
+## GAME
+games_creation:
+    path: /api/v1/{_locale}/games
+    controller: App\Game\GameCreationController
+    methods: [POST]
+    requirements:
+        _locale: en|fr

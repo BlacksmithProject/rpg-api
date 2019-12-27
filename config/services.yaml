@@ -1,0 +1,28 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    ## SYMFONY ##
+    App\Infrastructure\Symfony\RequestListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
+
+    App\Infrastructure\Symfony\ExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
+    ## USER ##
+    App\UserAccount\RegistrationController:
+        tags: ['controller.service_arguments']
+
+    App\UserAccount\AuthenticationController:
+        tags: ['controller.service_arguments']
+
+    App\UserAccount\UserRepository:
+
+    App\UserAccount\Token\TokenRepository:
+
+    App\UserAccount\ApiTokenAuthenticator:
