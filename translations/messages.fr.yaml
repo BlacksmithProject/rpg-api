@@ -7,13 +7,12 @@ data_control:
         is_blank:
             email: "L'email doit être renseigné"
             password: "Le mot de passe doit être renseigné"
-            username: "Le nom d'utilisateur doit être renseigné"
+            name: "Le nom d'utilisateur doit être renseigné"
         is_not_email:
             email: "L'email n'est pas valide"
         is_not_string:
             password: "Le mot de passe doit être une chaîne de caractères"
-            username: "Le nom d'utilisateur doit être une chaîne de caractères"
-    games:
+            name: "Le nom d'utilisateur doit être une chaîne de caractères"
 
 users:
     already_used: "L'email ou le nom d'utilisateur sont déjà utilisés"

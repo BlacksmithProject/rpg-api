@@ -13,10 +13,9 @@ users_authentication:
     requirements:
         _locale: en|fr
 
-## GAME
-games_creation:
-    path: /api/v1/{_locale}/games
-    controller: App\Game\GameCreationController
-    methods: [POST]
+users_info:
+    path: /api/v1/{_locale}/users/me
+    controller: App\UserAccount\UserInfoController
+    methods: [GET]
     requirements:
         _locale: en|fr

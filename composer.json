@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "beberlei/assert": "^3.2",
+        "nelmio/cors-bundle": "^2.0",
         "ramsey/uuid": "^3.8",
         "ramsey/uuid-doctrine": "^1.5",
         "symfony/console": "5.0.*",

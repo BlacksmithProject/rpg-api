@@ -2,7 +2,6 @@
 
 namespace App\UserAccount;
 
-use App\UserAccount\Token\AuthenticationTokenType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -19,6 +18,17 @@ final class UserRepository extends ServiceEntityRepository
             ->select('user')
             ->where('user.name = :name')
             ->setParameter('name', $name)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findByToken(string $tokenValue): ?User
+    {
+        return $this->createQueryBuilder('user')
+            ->select('user')
+            ->leftJoin('user.authenticationToken', 'authenticationToken')
+            ->where('authenticationToken.value = :tokenValue')
+            ->setParameter('tokenValue', $tokenValue)
             ->getQuery()
             ->getOneOrNullResult();
     }

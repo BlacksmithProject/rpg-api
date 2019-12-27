@@ -21,6 +21,9 @@ services:
     App\UserAccount\AuthenticationController:
         tags: ['controller.service_arguments']
 
+    App\UserAccount\UserInfoController:
+        tags: ['controller.service_arguments']
+
     App\UserAccount\UserRepository:
 
     App\UserAccount\Token\TokenRepository:

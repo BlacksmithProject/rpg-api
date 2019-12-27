@@ -37,18 +37,22 @@ final class ExceptionListener
         switch (get_class($exception)) {
             case DomainException::class:
                 return new JsonResponse([
-                    'error' => $this->translator->trans($exception->getMessage()),
+                    'errors' => [
+                        $this->translator->trans($exception->getMessage()),
+                    ],
                 ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
                 break;
             case AuthenticationException::class:
                 return new JsonResponse([
-                    'error' => $this->translator->trans($exception->getMessage()),
+                    'error' => [
+                        $this->translator->trans($exception->getMessage()),
+                    ],
                 ], JsonResponse::HTTP_UNAUTHORIZED);
                 break;
             case InvalidArgumentException::class:
                 return new JsonResponse([
-                    'error' => [
-                        $exception->getPropertyPath() => $this->translator->trans($exception->getMessage()),
+                    'errors' => [
+                        $this->translator->trans($exception->getMessage()),
                     ],
                 ], JsonResponse::HTTP_BAD_REQUEST);
                 break;
@@ -57,7 +61,7 @@ final class ExceptionListener
 
                 /** @var InvalidArgumentException  $errorException */
                 foreach ($exception->getErrorExceptions() as $errorException) {
-                    $errors[$errorException->getPropertyPath()] = $this->translator->trans($errorException->getMessage());
+                    $errors[] = $this->translator->trans($errorException->getMessage());
                 }
 
                 return new JsonResponse([

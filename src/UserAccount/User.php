@@ -52,7 +52,7 @@ class User implements UserInterface
      *
      * @Groups({"user_private"})
      */
-    private Token $authenticationToken;
+    private ?Token $authenticationToken = null;
 
     public static function register(
         string $password,
@@ -85,7 +85,7 @@ class User implements UserInterface
         return $this->name;
     }
 
-    public function authenticationToken(): Token
+    public function authenticationToken(): ?Token
     {
         return $this->authenticationToken;
     }

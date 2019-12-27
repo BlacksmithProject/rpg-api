@@ -18,7 +18,7 @@ class Token
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -28,15 +28,13 @@ class Token
 
     /**
      * @ORM\Column(type="datetime_immutable")
-     * @Groups({"user_private"})
      */
     private \DateTimeImmutable $expireAt;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user_private"})
      */
-    private TokenType $type;
+    private string $type;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\UserAccount\User", inversedBy="authenticationToken")
@@ -57,7 +55,7 @@ class Token
         $token->user = $user;
         $token->value = static::generateTokenValue();
         $token->expireAt = (new \DateTimeImmutable())->add($duration ?? new \DateInterval('P15D'));
-        $token->type = $tokenType;
+        $token->type = (string) $tokenType;
 
         return $token;
     }
