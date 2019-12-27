@@ -24,6 +24,9 @@ services:
     App\UserAccount\UserInfoController:
         tags: ['controller.service_arguments']
 
+    App\Chat\SendChatMessageController:
+        tags: ['controller.service_arguments']
+
     App\UserAccount\UserRepository:
 
     App\UserAccount\Token\TokenRepository:

@@ -19,3 +19,10 @@ users_info:
     methods: [GET]
     requirements:
         _locale: en|fr
+
+chat_send_message:
+    path: /api/v1/{_locale}/chat/messages
+    controller: App\Chat\SendChatMessageController
+    methods: [POST]
+    requirements:
+        _locale: en|fr
