@@ -14,39 +14,34 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Token
 {
     /**
-     * @var integer
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var string
      * @ORM\Column(type="string", length=255)
      * @Groups({"user_private"})
      */
-    private $value;
+    private string $value;
 
     /**
-     * @var \DateTimeImmutable
      * @ORM\Column(type="datetime_immutable")
      * @Groups({"user_private"})
      */
-    private $expireAt;
+    private \DateTimeImmutable $expireAt;
 
     /**
-     * @var TokenType
      * @ORM\Column(type="string", length=255)
      * @Groups({"user_private"})
      */
-    private $type;
+    private TokenType $type;
 
     /**
-     * @var User
      * @ORM\ManyToOne(targetEntity="App\UserAccount\User", inversedBy="authenticationToken")
      */
-    private $user;
+    private User $user;
 
     private function __construct()
     {

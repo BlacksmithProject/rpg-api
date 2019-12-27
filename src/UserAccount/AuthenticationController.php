@@ -15,14 +15,10 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 final class AuthenticationController
 {
-    /** @var UserRepository */
-    private $userRepository;
-    /** @var UserPasswordEncoderInterface */
-    private $passwordEncoder;
-    /** @var SerializerInterface */
-    private $serializer;
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private UserRepository $userRepository;
+    private UserPasswordEncoderInterface $passwordEncoder;
+    private SerializerInterface $serializer;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(
         UserRepository $userRepository,
@@ -39,12 +35,12 @@ final class AuthenticationController
     public function __invoke(Request $request): Response
     {
         $decodedAuthorization = $this->getDecodedAuthorization($request);
-        $email = $decodedAuthorization[0];
+        $name = $decodedAuthorization[0];
         $password = $decodedAuthorization[1];
 
-        $this->validateRequest($email, $password);
+        $this->validateRequest($name, $password);
 
-        $user = $this->userRepository->findByEmail($email);
+        $user = $this->userRepository->findByName($name);
 
         if (!$user) {
             throw new DomainException('users.not_found');
@@ -95,15 +91,14 @@ final class AuthenticationController
         return $decodedAuthorization;
     }
 
-    private function validateRequest(?string $email, ?string $password): void
+    private function validateRequest(?string $name, ?string $password): void
     {
-        Assert::that($email, null, 'email')->notNull('data_control.users.is_null.email');
+        Assert::that($name, null, 'name')->notNull('data_control.users.is_null.name');
         Assert::that($password, null, 'password')->notNull('data_control.users.is_null.password');
 
         Assert::lazy()
-            ->that($email, 'email')
-            ->notBlank('data_control.users.is_blank.email')
-            ->email('data_control.users.is_email.email')
+            ->that($name, 'name')
+            ->notBlank('data_control.users.is_blank.name')
 
             ->that($password, 'password')
             ->string('data_control.users.is_not_string.password')

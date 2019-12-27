@@ -16,8 +16,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class User implements UserInterface
 {
     /**
-     * @var UuidInterface
-     *
      * @ORM\Id
      * @ORM\Column(type="uuid", unique=true)
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -25,52 +23,38 @@ class User implements UserInterface
      *
      * @Groups({"user_private", "user_public"})
      */
-    private $id;
+    private UuidInterface $id;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", length=255, unique=true)
-     *
-     * @Groups({"user_private"})
-     */
-    private $email;
-
-    /**
-     * @var string
      * @ORM\Column(type="string", length=255)
      */
-    private $password;
+    private string $password;
 
     /**
-     * @var string
      * @ORM\Column(type="string", length=255, unique=true)
      *
      * @Groups({"user_private", "user_public"})
      */
-    private $name;
+    private string $name;
 
     /**
-     * @var \DateTimeImmutable
      * @ORM\Column(type="datetime_immutable")
      */
-    private $createdAt;
+    private \DateTimeImmutable $createdAt;
 
     /**
-     * @var \DateTimeImmutable
      * @ORM\Column(type="datetime_immutable")
      */
-    private $updatedAt;
+    private \DateTimeImmutable $updatedAt;
 
     /**
-     * @var Token
      * @ORM\OneToOne(targetEntity="App\UserAccount\Token\Token", mappedBy="user")
      *
      * @Groups({"user_private"})
      */
-    private $authenticationToken;
+    private Token $authenticationToken;
 
     public static function register(
-        string $email,
         string $password,
         string $username,
         UserPasswordEncoderInterface $passwordEncoder
@@ -78,7 +62,6 @@ class User implements UserInterface
         $user = new self();
         $now = new \DateTimeImmutable();
 
-        $user->email = $email;
         $user->password = $passwordEncoder->encodePassword($user, $password);
         $user->name = $username;
         $user->createdAt = $now;
@@ -90,11 +73,6 @@ class User implements UserInterface
     public function id(): UuidInterface
     {
         return $this->id;
-    }
-
-    public function email(): string
-    {
-        return $this->email;
     }
 
     public function password(): string
