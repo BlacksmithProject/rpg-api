@@ -2,11 +2,7 @@
 
 namespace App\UserAccount;
 
-use App\Infrastructure\Symfony\Exception\DomainException;
-use App\UserAccount\Token\AuthenticationTokenType;
-use App\UserAccount\Token\Token;
 use Assert\Assert;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,38 +14,25 @@ final class RegistrationController
     private UserPasswordEncoderInterface $passwordEncoder;
     private EntityManagerInterface $entityManager;
     private SerializerInterface $serializer;
+    private UserService $userService;
 
     public function __construct(
         UserPasswordEncoderInterface $passwordEncoder,
         EntityManagerInterface $entityManager,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        UserService $userService
     ) {
         $this->passwordEncoder = $passwordEncoder;
         $this->entityManager = $entityManager;
         $this->serializer = $serializer;
+        $this->userService = $userService;
     }
 
     public function __invoke(Request $request): Response
     {
         $this->validateRequest($request);
 
-        $user = User::register(
-            $request->request->get('password'),
-            $request->request->get('name'),
-            $this->passwordEncoder
-        );
-        $this->entityManager->persist($user);
-
-        $authenticationToken = Token::generateFor($user, new AuthenticationTokenType());
-        $this->entityManager->persist($authenticationToken);
-
-        $user->setAuthenticationToken($authenticationToken);
-
-        try {
-            $this->entityManager->flush();
-        } catch (UniqueConstraintViolationException $exception) {
-            throw new DomainException('users.already_used');
-        }
+        $user = $this->userService->register($request->request->get('name'), $request->request->get('password'));
 
         return new Response(
             $this->serializer->serialize($user, 'json', ['groups' => 'user_private']),

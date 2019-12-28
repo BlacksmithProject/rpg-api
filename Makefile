@@ -4,13 +4,21 @@ composer:
 	-rm -rf ./vendor
 	-a | composer install
 
-database:
+database: database-create migration
+fixtures: database fixtures-create
+
+database-create:
 	bin/console d:d:d --force
 	bin/console d:d:c
-	bin/console d:m:migrate --no-interaction
+
+fixtures-create:
+	bin/console fixtures:create
 
 diff:
 	bin/console d:m:diff
+
+migration:
+	bin/console d:m:migrate --no-interaction
 
 start:
 	bin/console server:start
