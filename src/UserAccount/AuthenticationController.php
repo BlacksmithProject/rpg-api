@@ -3,13 +3,13 @@
 namespace App\UserAccount;
 
 use App\Infrastructure\Symfony\Exception\AuthenticationException;
-use App\Infrastructure\Symfony\Exception\DomainException;
 use App\UserAccount\Token\AuthenticationTokenType;
 use App\UserAccount\Token\Token;
 use Assert\Assert;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -43,7 +43,7 @@ final class AuthenticationController
         $user = $this->userRepository->findByName($name);
 
         if (!$user) {
-            throw new DomainException('users.not_found');
+            throw new NotFoundHttpException('users.not_found');
         }
 
         if (!$this->passwordEncoder->isPasswordValid($user, $password)) {

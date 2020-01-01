@@ -21,7 +21,7 @@ class User implements UserInterface
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
      *
-     * @Groups({"user_private", "user_public"})
+     * @Groups({"user_private", "user_public", "game_owned"})
      */
     private UuidInterface $id;
 

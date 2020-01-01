@@ -42,3 +42,15 @@ services:
         tags: ['controller.service_arguments']
 
     App\Chat\MessageRepository:
+
+    ## Game ##
+    App\Game\CreateGameController:
+        tags: ['controller.service_arguments']
+
+    App\Game\ListGamesController:
+        tags: ['controller.service_arguments']
+
+    App\Game\GameInfoController:
+        tags: ['controller.service_arguments']
+
+    App\Game\GameRepository:

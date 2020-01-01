@@ -8,6 +8,7 @@ use Assert\InvalidArgumentException;
 use Assert\LazyAssertionException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ExceptionListener
@@ -41,6 +42,13 @@ final class ExceptionListener
                         $this->translator->trans($exception->getMessage()),
                     ],
                 ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+                break;
+            case NotFoundHttpException::class:
+                return new JsonResponse([
+                    'errors' => [
+                        $this->translator->trans($exception->getMessage()),
+                    ],
+                ], JsonResponse::HTTP_NOT_FOUND);
                 break;
             case AuthenticationException::class:
                 return new JsonResponse([

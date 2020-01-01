@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Symfony;
 
 use App\Chat\Message;
+use App\Game\Game;
 use App\UserAccount\UserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -35,10 +36,6 @@ final class FixturesCommand extends Command
 
         $usersData = [
             [
-                'name' => 'Console',
-                'password' => $password,
-            ],
-            [
                 'name' => 'John',
                 'password' => $password,
             ],
@@ -56,25 +53,50 @@ final class FixturesCommand extends Command
             $output->writeln(sprintf('User "%s" has been registered', $user->name()));
         }
 
+        $gamesData = [
+            [
+                'title' => 'The Dark Night',
+                'gameMaster' => 'John',
+            ],
+            [
+                'title' => 'The Marked Fellowship',
+                'gameMaster' => 'Jane',
+            ],
+        ];
+
+        $games = [];
+
+        foreach ($gamesData as $gameData) {
+            $game = Game::create($gameData['title'], $users[$gameData['gameMaster']]);
+            $this->entityManager->persist($game);
+            $this->entityManager->flush();
+            $games[$game->title()] = $game;
+            $output->writeln(sprintf('Game "%s" has been registered', $game->title()));
+        }
+
         $messages = [
             [
                 'emitter' => 'John',
                 'content' => 'Hello Jane !',
+                'game' => 'The Dark Night',
                 'isGenerated' => false,
             ],
             [
                 'emitter' => 'Jane',
                 'content' => 'Hi John ! How are you ?',
+                'game' => 'The Dark Night',
                 'isGenerated' => false,
             ],
             [
                 'emitter' => 'John',
                 'content' => "I'm fine ! And you ?",
+                'game' => 'The Dark Night',
                 'isGenerated' => false,
             ],
             [
                 'emitter' => 'Jane',
                 'content' => 'Pretty good, thank you.',
+                'game' => 'The Dark Night',
                 'isGenerated' => false,
             ],
         ];
@@ -87,12 +109,18 @@ final class FixturesCommand extends Command
             $messages[] = [
                 'emitter' => $player->name(),
                 'content' => $message,
+                'game' => 'The Marked Fellowship',
                 'isGenerated' => true,
             ];
         }
 
         foreach ($messages as $messageData) {
-            $message = new Message($users[$messageData['emitter']], $messageData['content'], $messageData['isGenerated']);
+            $message = new Message(
+                $users[$messageData['emitter']],
+                $games[$messageData['game']],
+                $messageData['content'],
+                $messageData['isGenerated']
+            );
             sleep(1);
             $this->entityManager->persist($message);
             $this->entityManager->flush();

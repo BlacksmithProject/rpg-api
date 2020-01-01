@@ -2,9 +2,9 @@
 
 namespace App\UserAccount;
 
-use App\Infrastructure\Symfony\Exception\DomainException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 final class UserInfoController
@@ -28,7 +28,7 @@ final class UserInfoController
         $user = $this->userRepository->findByToken($tokenValue);
 
         if (!$user) {
-            throw new DomainException('users.not_found');
+            throw new NotFoundHttpException('users.not_found');
         }
 
         return new Response(

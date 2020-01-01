@@ -1,4 +1,4 @@
-## USER
+## USER ##
 users_registration:
     path: /api/v1/{_locale}/users
     controller: App\UserAccount\RegistrationController
@@ -20,8 +20,9 @@ users_info:
     requirements:
         _locale: en|fr
 
+## CHAT ##
 chat_list_messages:
-    path: /api/v1/{_locale}/chat/messages
+    path: /api/v1/{_locale}/chat/messages/{gameId}
     controller: App\Chat\ListChatMessagesController
     methods: [GET]
     requirements:
@@ -31,5 +32,27 @@ chat_send_message:
     path: /api/v1/{_locale}/chat/messages
     controller: App\Chat\SendChatMessageController
     methods: [POST]
+    requirements:
+        _locale: en|fr
+
+## GAME ##
+games_create:
+    path: /api/v1/{_locale}/games
+    controller: App\Game\CreateGameController
+    methods: [POST]
+    requirements:
+        _locale: en|fr
+
+games_list:
+    path: /api/v1/{_locale}/games
+    controller: App\Game\ListGamesController
+    methods: [GET]
+    requirements:
+        _locale: en|fr
+
+games_info:
+    path: /api/v1/{_locale}/games/{gameId}
+    controller: App\Game\GameInfoController
+    methods: [GET]
     requirements:
         _locale: en|fr

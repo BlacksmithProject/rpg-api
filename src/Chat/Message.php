@@ -2,6 +2,7 @@
 
 namespace App\Chat;
 
+use App\Game\Game;
 use App\UserAccount\User;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
@@ -11,7 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity(repositoryClass="App\Chat\MessageRepository")
  * @ORM\Table(name="messages")
  */
-final class Message
+class Message
 {
     /**
      * @ORM\Id
@@ -51,9 +52,15 @@ final class Message
      */
     private \DateTimeImmutable $createdAt;
 
-    public function __construct(User $emitter, string $content, bool $isGenerated = false)
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Game\Game", inversedBy="messages")
+     */
+    private Game $game;
+
+    public function __construct(User $emitter, Game $game, string $content, bool $isGenerated = false)
     {
         $this->emitter = $emitter;
+        $this->game = $game;
         $this->content = $content;
         $this->isGenerated = $isGenerated;
 
@@ -74,6 +81,11 @@ final class Message
     public function emitter(): User
     {
         return $this->emitter;
+    }
+
+    public function game(): Game
+    {
+        return $this->game;
     }
 
     public function createdAt(): \DateTimeImmutable

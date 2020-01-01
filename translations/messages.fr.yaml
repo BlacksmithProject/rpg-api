@@ -3,7 +3,7 @@ data_control:
         is_null:
             email: "L'email est obligatoire"
             password: "Le mot de passe est obligatoire"
-            username: "Le nom d'utilisateur est obligatoire"
+            name: "Le nom d'utilisateur est obligatoire"
         is_blank:
             email: "L'email doit être renseigné"
             password: "Le mot de passe doit être renseigné"
@@ -13,9 +13,29 @@ data_control:
         is_not_string:
             password: "Le mot de passe doit être une chaîne de caractères"
             name: "Le nom d'utilisateur doit être une chaîne de caractères"
+    message:
+        is_null: "Le message est obligatoire"
+        is_blank: "Le message doit être renseigné"
+        is_not_string: "Le message doit être une chaîne de caractères"
+    games:
+        is_null:
+            title: "Le titre est obligatoire"
+            id: "L'id est obligatoire"
+        is_blank:
+            title: "Le titre doit être renseigné"
+            id: "L'id doit être fourni"
+        is_not_string:
+            title: "Le titre doit être une chaîne de caractères"
+        is_not_uuid:
+            id: "L'id doit être un uuid"
 
 users:
     already_used: "L'email ou le nom d'utilisateur sont déjà utilisés"
     not_found: "L'utilisateur ne peut pas être trouvé"
     invalid_credentials: "Identifiants invalides"
     invalid_token: "Token d'identification invalide"
+
+games:
+    not_found: "La partie ne peut pas être trouvée"
+    title:
+        already_used: "Le titre est déjà utilisé"
